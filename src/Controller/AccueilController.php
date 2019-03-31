@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Repository\BienRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -22,10 +24,15 @@ class AccueilController extends  AbstractController{
     */
     /**
      * @Route("/", name="accueil")
+     * @param BienRepository $bienRepo
      * @return Response
      */
-    public function index(): Response {
+    public function index(BienRepository $bienRepo): Response {
         //return new Response($this->twig->render('pages/accueil.html.twig'));
-        return $this->render('pages/accueil.html.twig');
+        $biens = $bienRepo->findLatest();
+
+        return $this->render('pages/accueil.html.twig', [
+            'catalogue' => $biens
+        ]);
     }
 }
