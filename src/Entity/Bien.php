@@ -6,8 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 use Cocur\Slugify\Slugify;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\BienRepository")
+ * @UniqueEntity("nom")
  */
 class Bien
 {
@@ -26,6 +31,13 @@ class Bien
 
     /**
      * @ORM\Column(type="string", length=255)
+     * 
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 255,
+     *      minMessage = "Merci de saisir au minimum {{ limit }} caracteres",
+     *      maxMessage = "Merci de saisir au maximaum {{ limit }} caracteres"
+     * )
      */
     private $nom;
 
@@ -36,6 +48,13 @@ class Bien
 
     /**
      * @ORM\Column(type="integer")
+     * 
+     * @Assert\Range(
+     *      min = 20,
+     *      max = 500,
+     *      minMessage = "Merci de saisir au moins {{ limit }} m²",
+     *      maxMessage = "Merci de saisir au plus  {{ limit }} m²"
+     * )
      */
     private $surface;
 
