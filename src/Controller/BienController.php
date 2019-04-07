@@ -14,6 +14,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 use Twig\Environment;
 
+use Knp\Component\Pager\PaginatorInterface;
+
+use Symfony\Component\HttpFoundation\Request;
+
 
 class BienController extends AbstractController{
 
@@ -33,7 +37,7 @@ class BienController extends AbstractController{
      * @Route("/biens", name="catalogue.index")
      * @return Response
      */
-    public function index(): Response {
+    public function index(PaginatorInterface $paginator, Request $request): Response {
         //return new Response('Liste des biens en vente');
 
         /* Ajout d'un nouveau bien
@@ -62,8 +66,14 @@ class BienController extends AbstractController{
         
         $this->em->flush();*/
         //dump($biens);
+        $biens = $paginator->paginate(
+                        $this->bienRepo->findAllEnVenteQuery(),
+                        $request->query->getInt('page', 1), /*page number*/
+                        12 /*limit per page*/
+        );
         return $this->render('bien/index.html.twig', [
-            'current_menu' => 'catalogue'
+            'current_menu' => 'catalogue',
+            'biens_en_vente' => $biens
             ]
         );
     }

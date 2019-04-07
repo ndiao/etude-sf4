@@ -6,6 +6,7 @@ use App\Entity\Bien;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -23,12 +24,11 @@ class BienRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Bien[]
+     * @return Query
      */
-    public function findAllEnVente(): array {
+    public function findAllEnVenteQuery(): Query {
         return $this->findEnVenteQuery()
-            ->getQuery()
-            ->getResult();
+            ->getQuery();
     }
     
     /**

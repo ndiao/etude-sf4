@@ -1,0 +1,11 @@
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{{ path('bien.show', {slug: bien.slug, id: bien.id}) }}">{{ bien.nom }}</a>
+        </h5>
+        <p class="card-text">{{ bien.adresse }}, {{ bien.ville }}</p>
+        <div class="text-primary" style="font-size:2rem; font-weight: bold;">
+            {{ bien.formattedPrix }}
+        </div>
+    </div>
+</div>
