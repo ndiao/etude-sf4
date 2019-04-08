@@ -18,6 +18,9 @@ use Knp\Component\Pager\PaginatorInterface;
 
 use Symfony\Component\HttpFoundation\Request;
 
+use App\Payload\BienSearch;
+use App\Form\BienSearchType;
+
 
 class BienController extends AbstractController{
 
@@ -66,14 +69,19 @@ class BienController extends AbstractController{
         
         $this->em->flush();*/
         //dump($biens);
+        $bienSearch = new BienSearch();
+        $form = $this->createForm(BienSearchType::class, $bienSearch);
+        $form->handleRequest($request);
+
         $biens = $paginator->paginate(
-                        $this->bienRepo->findAllEnVenteQuery(),
+                        $this->bienRepo->findAllEnVenteQuery($bienSearch),
                         $request->query->getInt('page', 1), /*page number*/
                         12 /*limit per page*/
         );
         return $this->render('bien/index.html.twig', [
             'current_menu' => 'catalogue',
-            'biens_en_vente' => $biens
+            'biens_en_vente' => $biens,
+            'form'          => $form->createView()
             ]
         );
     }

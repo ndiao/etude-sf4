@@ -10,6 +10,8 @@ use Doctrine\ORM\Query;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
+use App\Payload\BienSearch;
+
 /**
  * @method Bien|null find($id, $lockMode = null, $lockVersion = null)
  * @method Bien|null findOneBy(array $criteria, array $orderBy = null)
@@ -26,9 +28,22 @@ class BienRepository extends ServiceEntityRepository
     /**
      * @return Query
      */
-    public function findAllEnVenteQuery(): Query {
-        return $this->findEnVenteQuery()
-            ->getQuery();
+    public function findAllEnVenteQuery(BienSearch $bienSearch): Query {
+        $query = $this->findEnVenteQuery();
+
+        if($bienSearch->getPrixMax()) {
+            $query = $query
+                        ->andwhere('b.prix <= :prixMax')
+                        ->setParameter('prixMax', $bienSearch->getPrixMax());
+        }
+
+        if($bienSearch->getSurfaceMin()) {
+            $query = $query
+                        ->andwhere('b.surface >= :surfaceMin')
+                        ->setParameter('surfaceMin', $bienSearch->getSurfaceMin());
+        }
+
+        return $query->getQuery();
     }
     
     /**
