@@ -8,6 +8,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+use App\Entity\Categorie;
+
 class BienSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -27,7 +31,13 @@ class BienSearchType extends AbstractType
                     'placeholder' => 'Budget maximal'
                 ]
             ])
-        ;
+            ->add('categories', EntityType::class, [
+                'class' => Categorie::class,
+                'label' => false,
+                'required' => false,
+                'choice_label' => 'nom',
+                'multiple' => true
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

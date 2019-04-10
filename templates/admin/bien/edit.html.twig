@@ -1,11 +1,11 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Gestion des biens{% endblock %}
+{% block title %}Gestion des catégories{% endblock %}
 
 {% block body %}
     
     <div class="container mt-4">
         <h1>Edition du bien N° {{ bien.id }}</h1>
-        {{ include ('admin/bien/common_bien_form.html.twig', { form: form, button: 'Modifier'}) }}
+        {{ include ('admin/bien/common_bien_form.html.twig', { button: 'Modifier'}) }}
     </div>
 {% endblock %} 

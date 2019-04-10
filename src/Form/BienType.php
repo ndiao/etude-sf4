@@ -9,6 +9,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Categorie;
+
 class BienType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -20,7 +23,14 @@ class BienType extends AbstractType
             ->add('pieces')
             ->add('chambres')
             ->add('etage')
-            ->add('climatisation', ChoiceType::class, [ 'choices' => $this->getChoix()])
+            ->add('climatisation', ChoiceType::class, [ 
+                'choices' => $this->getChoix()
+            ])
+            ->add('categories', EntityType::class, [
+                'class' => Categorie::class,
+                'choice_label' => 'nom',
+                'multiple' => true
+            ])
             ->add('ville')
             ->add('adresse')
             ->add('vendu')

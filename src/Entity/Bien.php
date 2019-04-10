@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use Cocur\Slugify\Slugify;
@@ -103,8 +105,16 @@ class Bien
      */
     private $prix;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Categorie", inversedBy="biens")
+     */
+    private $categories;
+
+    
+
     public function __construct(){
         $this->date_creation = new \DateTime();
+        $this->categories = new ArrayCollection();
         // $this->vendu = false;
     }
 
@@ -268,4 +278,34 @@ class Bien
     public function getTypeClimatisation(): string {
         return self::CLIMATISATION[$this->climatisation];
     }
+
+    /**
+     * @return Collection|Categorie[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Categorie $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addBien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categorie $category): self
+    {
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
+            $category->removeBien($this);
+        }
+
+        return $this;
+    }
+
+    
 }

@@ -43,6 +43,17 @@ class BienRepository extends ServiceEntityRepository
                         ->setParameter('surfaceMin', $bienSearch->getSurfaceMin());
         }
 
+        if($bienSearch->getCategories()->count() > 0){
+            $k = 0;
+            foreach($bienSearch->getCategories() as $categorie){
+                $k++;
+                dump($k);
+                 $query = $query
+                            ->andwhere(":categorie$k MEMBER OF b.categories")
+                            ->setParameter("categorie$k", $categorie);   
+            }
+        }
+
         return $query->getQuery();
     }
     

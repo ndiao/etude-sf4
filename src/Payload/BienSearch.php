@@ -3,7 +3,7 @@
 namespace App\Payload;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 class BienSearch {
 
@@ -17,6 +17,17 @@ class BienSearch {
      * @Assert\Range(min = 40, max = 500)
      */
     private $surfaceMin;
+
+
+    /**
+     * @var ArrayCollection
+     */
+    private $categories;
+
+
+    public function __construct(){
+        $this->categories =  new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -55,4 +66,22 @@ class BienSearch {
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCategories(): ArrayCollection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param ArrayCollection $categories
+     */
+    public function setCategories(ArrayCollection $categories): void
+    {
+        $this->categories = $categories;
+    }
+    
+    
 }
